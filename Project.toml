@@ -1,0 +1,7 @@
+name = "NewtonSchulz"
+uuid = "ffda9531-618e-46f2-b97a-23c8fea85237"
+authors = ["Cédric Simal"]
+version = "1.0.0-DEV"
+
+[compat]
+julia = "1.10.10"
