@@ -2,6 +2,7 @@ using NewtonSchulz
 using Test
 using Aqua
 using JET
+using Random
 
 @testset "NewtonSchulz.jl" begin
     @testset "Code quality (Aqua.jl)" begin
@@ -10,5 +11,8 @@ using JET
     @testset "Code linting (JET.jl)" begin
         JET.test_package(NewtonSchulz; target_defined_modules = true)
     end
-    # Write your tests here.
+    include("newton_schulz.jl")
+    include("msign.jl")
+    include("mcsgn.jl")
+    include("matrix_square_root.jl")
 end

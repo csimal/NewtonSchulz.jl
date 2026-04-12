@@ -12,6 +12,7 @@ X_{t+1} = a X_t + b (X_t X_t^T) X_t + c (X_t X_t^T)^2 X_t
 starting from `X_0 = A / ||A||_F`. 
 """
 function newton_schulz(A::AbstractMatrix, coeffs, nsteps = length(coeffs))
+    @assert nsteps >= 0
     X = size(A, 1) > size(A, 2) ? transpose(copy(A)) : copy(A)
     X ./= norm(X) + 1e-20
     for t in 1:nsteps
@@ -28,6 +29,7 @@ end
 In-place version of `newton_schulz`, which modifies the input matrix `A`.
 """
 function newton_schulz!(A::AbstractMatrix, coeffs, nsteps = length(coeffs))
+    @assert nsteps >= 0
     X = size(A, 1) > size(A, 2) ? transpose(A) : A
     X ./= norm(X) + 1e-20
     for t in 1:nsteps
@@ -36,10 +38,6 @@ function newton_schulz!(A::AbstractMatrix, coeffs, nsteps = length(coeffs))
         X .= a * X + (b * Y + c * (Y*Y)) * X
     end
     return size(A, 1) > size(A, 2) ? transpose(X) : X
-end
-
-function adjust_coeffs(coeffs, factor=1.01)
-    return [(a/factor, b/factor^2, c/factor^3) for (a,b,c) in coeffs]
 end
 
 """
@@ -54,6 +52,7 @@ X_{t+1} = a X_t + b  X_t^3 + c X_t^5
 starting from `X_0 = A / ||A||_F`. 
 """
 function newton_schulz_square(A::AbstractMatrix, coeffs, nsteps = length(coeffs))
+    @assert nsteps >= 0
     @assert size(A,1) == size(A,2)
     X = copy(A)
     X ./= norm(X) + 1e-20
@@ -71,6 +70,7 @@ end
 In-place version of `newton_schulz_square`, which modifies the input matrix `A`.
 """
 function newton_schulz_square!(A::AbstractMatrix, coeffs, nsteps = length(coeffs))
+    @assert nsteps >= 0
     @assert size(A,1) == size(A,2)
     X = A
     X ./= norm(X) + 1e-20
@@ -80,6 +80,10 @@ function newton_schulz_square!(A::AbstractMatrix, coeffs, nsteps = length(coeffs
         X .= a * X + (b * Y + c * (Y*Y)) * X
     end
     return X
+end
+
+function adjust_coeffs(coeffs, factor=1.01)
+    return [(a/factor, b/factor^3, c/factor^5) for (a,b,c) in coeffs]
 end
 
 abstract type AbstractNewtonSchulz end
