@@ -45,11 +45,15 @@ For general purposes, either `PolarExpress` or `NSJianlinSu` are suitable. The n
 ## Matrix Sign and Newton-Schulz
 
 The matrix sign of a rectangular matrix $A \in \mathbb{R}^{m \times n}$ is defined as
+
 $$ \text{msign}(A) = UV^\top = (A A^\top)^{-1/2} A = A (A^\top A)^{-1/2}, $$
+
 where $A = U\Sigma V^\top$ is the (thin) SVD of $A$. In essence $\text{msign}(A)$ is the matrix with the same singular vectors as $A$ but with all non-zero singular values set to one.
 
 Using the SVD decomposition is the simplest method to compute $\text{msign}$, but is computationally expensive, and not efficient on GPUs. An alternative approach consists in computing the following sequence
+
 $$ X_{t+1} = a X_t + b (X_t X_t^\top) X_t + c (X_t X_t^\top)^2 X_t, $$
+
 where $X_0 = A / \|A\|_F$, and $(a,b,c)=(2,-1.5,0.5)$. Each iteration preserves the singular vectors while applying the quintic polynomial $p(x)=ax + bx^3 + cx^5$ to the singular values. It can be shown that $\lim_{n\rightarrow \infty}p^{(n)}(x) = \text{sign}(x)$, and so that $\lim_{t\rightarrow \infty} X_t = \text{msign}(A)$. The advantage of this approach is that each iteration only involves matrix multiplications and additions, so it can be performed efficiently on GPU. 
 
 This package exports functions `msign` and `newton_schulz` to perform these computations.
@@ -67,11 +71,15 @@ Concretely, `msign` can be computed either via SVD using the `MSignSVD` method, 
 ## Alternative for square matrices
 
 For square matrices, we can define an alternative function,
+
 $$ \text{mcsgn}(A) = (A^2)^{-1/2} A = A (A^2)^{-1/2}. $$
+
 This latter function is invariant under similarity transformation ($\text{mcsgn}(PAP^{-1}) = \text{mcsgn}(A)$), and if $A$ is diagonalizable, $\text{mcsgn}(A)$ is the matrix with the same eigenvectors as $A$ and eigenvalues replaced by their sign.
 
 This function can be approximated by a similar iteration as for `msign`, namely
+
 $$ X_{t+1} = a X_t + b X_t^3 + c X_t^5. $$
+
 The same coefficients used for `msign` can be used for this.
 
 ```julia
