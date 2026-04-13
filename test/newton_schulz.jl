@@ -31,6 +31,33 @@
         A = rand(20, 10)
         B = newton_schulz(A, coeffs)
         @test size(B) == size(A)
+
+        @test_throws AssertionError newton_schulz(A, coeffs, -1)
+    end
+    @testset "newton_schulz!" begin
+        using NewtonSchulz: NS_COEFFS
+        coeffs = NS_COEFFS
+        rng = Xoshiro(2026)
+
+        A = rand(rng, 10, 20)
+        B = newton_schulz!(A, coeffs)
+
+        @test size(B) == size(A)
+        @test B isa Matrix
+        @test A === B
+
+        B = newton_schulz!(A', coeffs)
+        @test (size(B,2), size(B,1)) == size(A)
+
+        C = newton_schulz!(A, coeffs, 10)
+        @test size(C) == size(A)
+
+        A = rand(20, 10)
+        B = newton_schulz!(A, coeffs)
+        @test size(B) == size(A)
+        @test A === B
+
+        @test_throws AssertionError newton_schulz!(A, coeffs, -1)
     end
     @testset "newton_schulz_square" begin
         using NewtonSchulz: NS_COEFFS, newton_schulz_square
@@ -44,5 +71,25 @@
         B = newton_schulz_square(A, coeffs, 10)
 
         @test size(B) == size(A)
+
+        @test_throws AssertionError newton_schulz_square(A, coeffs, -1)
+    end
+    @testset "newton_schulz_square!" begin
+        using NewtonSchulz: NS_COEFFS, newton_schulz_square
+        coeffs = NS_COEFFS
+        rng = Xoshiro(2026)
+        A = randn(rng, 10,10)
+        B = newton_schulz_square!(A, coeffs)
+
+        @test size(B) == size(A)
+        @test B === A
+
+        A = randn(rng, 10, 10)
+        C = newton_schulz_square!(A, coeffs, 10)
+
+        @test size(C) == size(A)
+        @test C === A
+
+        @test_throws AssertionError newton_schulz_square!(A, coeffs, -1)
     end
 end
