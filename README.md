@@ -10,7 +10,9 @@ A Julia implementation of the Newton-Schulz and its variants for computing the m
 
 - [x] Basic SVD version of `msign`
 - [x] Generic Newton-Schulz interface
+- [x] `msign` implementation
+- [x] `mcsgn` implementation
 - [ ] AD Rules for `msign` (following https://kexue.fm/archives/11025, https://kexue-tl.pages.dev/11025-The-Derivative-of-the-msign-Operator)
-- [ ] Matrix square root and inverse square root
+- [x] Matrix square root and inverse square root
 - [ ] Matrix nth root
 - [ ] Explicit GPU support
