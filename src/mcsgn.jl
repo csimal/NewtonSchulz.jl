@@ -1,6 +1,4 @@
 
-struct MCsgnEigen end
-
 """
     mcsgn(A, method)
 
