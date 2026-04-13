@@ -54,7 +54,7 @@ Using the SVD decomposition is the simplest method to compute $\text{msign}$, bu
 
 $$ X_{t+1} = a X_t + b (X_t X_t^\top) X_t + c (X_t X_t^\top)^2 X_t, $$
 
-where $X_0 = A / \|A\|_F$, and $(a,b,c)=(2,-1.5,0.5)$. Each iteration preserves the singular vectors while applying the quintic polynomial $p(x)=ax + bx^3 + cx^5$ to the singular values. It can be shown that $\lim_{n\rightarrow \infty}p^{(n)}(x) = \text{sign}(x)$, and so that $\lim_{t\rightarrow \infty} X_t = \text{msign}(A)$. The advantage of this approach is that each iteration only involves matrix multiplications and additions, so it can be performed efficiently on GPU. 
+where $X_0 = A / \lVert A\rVert_F$, and $(a,b,c)=(2,-1.5,0.5)$. Each iteration preserves the singular vectors while applying the quintic polynomial $p(x)=ax + bx^3 + cx^5$ to the singular values. It can be shown that $\lim_{n\rightarrow \infty}p^{(n)}(x) = \text{sign}(x)$, and so that $\lim_{t\rightarrow \infty} X_t = \text{msign}(A)$. The advantage of this approach is that each iteration only involves matrix multiplications and additions, so it can be performed efficiently on GPU. 
 
 This package exports functions `msign` and `newton_schulz` to perform these computations.
 
