@@ -15,8 +15,8 @@ function msign end
 struct MSignSVD end
 
 function msign(A::AbstractMatrix, ::MSignSVD)
-    F = svd(A)
-    return F.U * Diagonal(sign.(F.S)) * F.Vt
+    F = svd(A) # computes thin SVD by default
+    return F.U * F.Vt
 end
 
 msign(A::AbstractMatrix, ns::AbstractNewtonSchulz) = newton_schulz(A, coeffs(ns))
