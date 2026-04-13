@@ -1,6 +1,6 @@
 name = "NewtonSchulz"
 uuid = "ffda9531-618e-46f2-b97a-23c8fea85237"
-version = "1.0.0-DEV"
+version = "0.1.0"
 authors = ["Cédric Simal"]
 
 [deps]
