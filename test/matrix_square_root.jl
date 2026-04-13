@@ -42,6 +42,14 @@ using NewtonSchulz: coeffs
         @test_throws AssertionError mrsqrt(ones(3,4), coeffs_, 10)
     end
     @testset "matmul_mrsqrt" begin
+        rng = Xoshiro(2026)
 
+        # TODO Add proper behavioral tests
+
+        coeffs_ = coeffs(NSJianlinSu())
+
+        @test_throws AssertionError matmul_mrsqrt(ones(2,2), ones(2,2), coeffs_, -1)
+        @test_throws AssertionError matmul_mrsqrt(ones(2,2), ones(3,3), coeffs_, 10)
+        @test_throws AssertionError matmul_mrsqrt(ones(2,2), ones(2,3), coeffs_, 10)
     end
 end
