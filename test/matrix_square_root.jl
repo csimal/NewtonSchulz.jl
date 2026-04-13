@@ -43,8 +43,16 @@ using NewtonSchulz: coeffs
     end
     @testset "matmul_mrsqrt" begin
         rng = Xoshiro(2026)
+        A = randn(rng, 20, 10)
+        B = randn(rng, 10, 10)
+        B = B * B' ./ 10 + I
+        C = msqrt(B, NSJianlinSu(), 10)
 
-        # TODO Add proper behavioral tests
+        D = matmul_mrsqrt(A, B, NSJianlinSu(), 10)
+
+        @test size(D) == size(A)
+        @test norm(D*C - A, Inf) < 1e-03
+        @test opnorm(D*C - A) < 1e-03
 
         coeffs_ = coeffs(NSJianlinSu())
 
