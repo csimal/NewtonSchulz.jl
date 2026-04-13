@@ -13,8 +13,4 @@ If `A` admits an eigendecomposition `A = P Λ P^{-1}`, then `mcsgn(A) = P sign.(
 """
 function mcsgn end
 
-mcsgn(A::AbstractMatrix, ns::AbstractNewtonSchulz) = newton_schulz_square(A, coeffs(ns))
-
-mcsgn(A::AbstractMatrix, ns::ClassicalNewtonSchulz) = newton_schulz_square(A, coeffs(ns), ns.nsteps)
-
-mcsgn(A::AbstractMatrix, ns::NSJordan) = newton_schulz_square(A, coeffs(ns), ns.nsteps)
+mcsgn(A::AbstractMatrix, ns::AbstractNewtonSchulz, nsteps=nsteps(ns)) = newton_schulz_square(A, coeffs(ns), nsteps)

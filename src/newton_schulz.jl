@@ -88,6 +88,8 @@ end
 
 abstract type AbstractNewtonSchulz end
 
+nsteps(ns::AbstractNewtonSchulz) = length(coeffs(ns))
+
 """
     ClassicalNewtonSchulz <: AbstractNewtonSchulz
 
@@ -100,6 +102,7 @@ end
 const NS_COEFFS = [(2.0, -1.5, 0.5)]
 
 coeffs(::ClassicalNewtonSchulz) = NS_COEFFS
+nsteps(ns::ClassicalNewtonSchulz) = ns.nsteps
 
 """
     NSJordan <: AbstractNewtonSchulz
@@ -115,6 +118,7 @@ end
 const NSJORDAN_COEFFS = [((3.4445, -4.7750, 2.0315))]
 
 coeffs(::NSJordan) = NSJORDAN_COEFFS
+nsteps(ns::NSJordan) = ns.nsteps
 
 """
     PolarExpress <: AbstractNewtonSchulz

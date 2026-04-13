@@ -19,8 +19,4 @@ function msign(A::AbstractMatrix, ::MSignSVD)
     return F.U * F.Vt
 end
 
-msign(A::AbstractMatrix, ns::AbstractNewtonSchulz) = newton_schulz(A, coeffs(ns))
-
-msign(A::AbstractMatrix, ns::ClassicalNewtonSchulz) = newton_schulz(A, coeffs(ns), ns.nsteps)
-
-msign(A::AbstractMatrix, ns::NSJordan) = newton_schulz(A, coeffs(ns), ns.nsteps)
+msign(A::AbstractMatrix, ns::AbstractNewtonSchulz, nsteps=nsteps(ns)) = newton_schulz(A, coeffs(ns), nsteps)
