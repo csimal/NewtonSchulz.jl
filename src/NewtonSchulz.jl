@@ -10,7 +10,8 @@ export mcsgn
 export msqrt, mrsqrt, matmul_mrsqrt
 
 export MSignSVD, ClassicalNewtonSchulz, NSJordan
-export PolarExpress, NSCesista
+export PolarExpress, NSJianlinSu, NSCesista
+export NSSquareRoot
 
 include("newton_schulz.jl")
 include("msign.jl")
