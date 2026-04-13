@@ -3,7 +3,7 @@ using LinearAlgebra: eigen, norm, opnorm, Diagonal
 
     @testset "msign Newton-Schulz" begin
         rng = Xoshiro(2026)
-        A = randn(10, 10)
+        A = randn(rng, 10, 10)
         A = A + A' # make A symmetric
         F = eigen(A)
         B = F.vectors * Diagonal(sign.(F.values)) * F.vectors'

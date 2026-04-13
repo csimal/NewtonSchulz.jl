@@ -9,7 +9,7 @@ using Random
         Aqua.test_all(NewtonSchulz; ambiguities = false,)
     end
     @testset "Code linting (JET.jl)" begin
-        JET.test_package(NewtonSchulz; target_defined_modules = true)
+        JET.test_package(NewtonSchulz)
     end
     include("newton_schulz.jl")
     include("msign.jl")

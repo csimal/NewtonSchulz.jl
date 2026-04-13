@@ -9,11 +9,12 @@ The square root of a matrix `A` is a matrix `B` such that `A = B^2`. This functi
 """
 function msqrt end
 
-msqrt(A, ns::AbstractNewtonSchulz) = msqrt(A, coeffs(ns))
-msqrt(A, ns::ClassicalNewtonSchulz) = msqrt(A, coeffs(ns), ns.nsteps)
-msqrt(A, ns::NSJordan) = msqrt(A, coeffs(ns), ns.nsteps)
+msqrt(A::AbstractMatrix, ns::AbstractNewtonSchulz) = msqrt(A, coeffs(ns))
+msqrt(A::AbstractMatrix, ns::ClassicalNewtonSchulz) = msqrt(A, coeffs(ns), ns.nsteps)
+msqrt(A::AbstractMatrix, ns::NSJordan) = msqrt(A, coeffs(ns), ns.nsteps)
 
 function msqrt(A::AbstractMatrix, coeffs, nsteps=length(coeffs))
+    @assert nsteps >= 0
     @assert size(A,1) == size(A,2) "matrix must be square"
     T = tr(A)
     Y = copy(A) / T
@@ -35,11 +36,12 @@ Compute the inverse square root of a positive semidefinite matrix `A`.
 """
 function mrsqrt end
 
-mrsqrt(A, ns::AbstractNewtonSchulz) = msqrt(A, coeffs(ns))
-mrsqrt(A, ns::ClassicalNewtonSchulz) = msqrt(A, coeffs(ns), ns.nsteps)
-mrsqrt(A, ns::NSJordan) = msqrt(A, coeffs(ns), ns.nsteps)
+mrsqrt(A::AbstractMatrix, ns::AbstractNewtonSchulz) = msqrt(A, coeffs(ns))
+mrsqrt(A::AbstractMatrix, ns::ClassicalNewtonSchulz) = msqrt(A, coeffs(ns), ns.nsteps)
+mrsqrt(A::AbstractMatrix, ns::NSJordan) = msqrt(A, coeffs(ns), ns.nsteps)
 
 function mrsqrt(A::AbstractMatrix, coeffs, nsteps=length(coeffs))
+    @assert nsteps >= 0
     @assert size(A,1) == size(A,2) "matrix must be square"
     T = tr(A)
     YZ = A / T
@@ -56,7 +58,7 @@ end
 """
     matmul_mrsqrt(A, B, method)
 
-Compute the product `A * B^{1/2}` where `A` is a rectangular matrix, and `B` is a positive semidefinite matrix.
+Compute the product `A * B^{-1/2}` where `A` is a rectangular matrix, and `B` is a positive definite matrix.
 """
 function matmul_mrsqrt end
 
