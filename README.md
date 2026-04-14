@@ -1,4 +1,4 @@
-# NewtonSchulz
+# NewtonSchulz.jl
 
 [![Build Status](https://github.com/csimal/NewtonSchulz.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/csimal/NewtonSchulz.jl/actions/workflows/CI.yml?query=branch%3Amain)
 [![Coverage](https://codecov.io/gh/csimal/NewtonSchulz.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/csimal/NewtonSchulz.jl)
@@ -35,7 +35,7 @@ All the matrix functions in this package follow this interface.
 All of the above functions use the iterative approach described below, with several choices of coefficients available.
 
 - `ClassicalNewtonSchulz`: The classical Newton-Schulz coefficients. This method converges slowly compared to other methods, do it is generally not recommended.
-- `NSJordan`: The coefficients presented in https://kellerjordan.github.io/posts/muon/. These coefficients are designed to get a fast approximation of `msign` under very low tolerances ($O(0.1)$).
+- `NSJordan`: The coefficients presented in https://kellerjordan.github.io/posts/muon/. These coefficients are designed to get a fast approximation of `msign` under very low tolerances (O(0.1)), for use in the Muon optimizer.
 - `PolarExpress` A set of coefficients designed for high tolerances (See https://arxiv.org/abs/2505.16932).
 - `NSJianlinSu` A set of coefficients designed in https://kexue.fm/archives/10996 using the same principle as `PolarExpress`.
 
@@ -48,13 +48,13 @@ The matrix sign of a rectangular matrix $A \in \mathbb{R}^{m \times n}$ is defin
 
 $$ \text{msign}(A) = UV^\top = (A A^\top)^{-1/2} A = A (A^\top A)^{-1/2}, $$
 
-where $A = U\Sigma V^\top$ is the (thin) SVD of $A$. In essence $\text{msign}(A)$ is the matrix with the same singular vectors as $A$ but with all non-zero singular values set to one.
+where $A = U\Sigma V^\top$ is the (thin) SVD of $A$. In essence, $\text{msign}(A)$ is the matrix with the same singular vectors as $A$ but with all non-zero singular values set to one.
 
 Using the SVD decomposition is the simplest method to compute $\text{msign}$, but is computationally expensive, and not efficient on GPUs. An alternative approach consists in computing the following sequence
 
 $$ X_{t+1} = a X_t + b (X_t X_t^\top) X_t + c (X_t X_t^\top)^2 X_t, $$
 
-where $X_0 = A / \lVert A\rVert_F$, and $(a,b,c)=(2,-1.5,0.5)$. Each iteration preserves the singular vectors while applying the quintic polynomial $p(x)=ax + bx^3 + cx^5$ to the singular values. It can be shown that $\lim_{n\rightarrow \infty}p^{(n)}(x) = \text{sign}(x)$, and so that $\lim_{t\rightarrow \infty} X_t = \text{msign}(A)$. The advantage of this approach is that each iteration only involves matrix multiplications and additions, so it can be performed efficiently on GPU. 
+where $X_0 = A / \lVert A\rVert_F$, and $(a,b,c)=(2,-1.5,0.5)$. Each iteration preserves the singular vectors while applying the quintic polynomial $p(x)=ax + bx^3 + cx^5$ to the singular values, and it can be shown that $\lim_{n\rightarrow \infty}p^{(n)}(x) = \text{sign}(x)$, and so that $\lim_{t\rightarrow \infty} X_t = \text{msign}(A)$. More advanced methods use iteration dependent coefficients $(a_t,b_t,c_t)$ for faster convergence. The advantage of this approach is that each iteration only involves matrix multiplications and additions, so it can be performed efficiently on GPU. 
 
 This package exports functions `msign` and `newton_schulz` to perform these computations.
 
@@ -90,7 +90,7 @@ O = mcsgn(A, PolarExpress())
 
 ## Matrix square-root and inverse square-root
 
-The `mcsgn` iteration can be adapted to compute the arithmetic matrix square root of a square positive semidefinite matrix $A$, namely, a square positive semidefinite matrix $B$ such that $B^2 = A$. This can be done in this package via the `msqrt` function
+The `mcsgn` iteration can be adapted to compute the arithmetic matrix square root of a square positive semidefinite matrix $A$, i.e., a square positive semidefinite matrix $B$ such that $B^2 = A$. This can be done in this package via the `msqrt` function
 
 ```julia
 A = randn(10,10)
